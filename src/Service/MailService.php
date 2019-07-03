@@ -10,6 +10,8 @@ use Twig\Environment;
 
 class MailService
 {
+    private $fileName = 'helloworld.pdf';
+
     /**
      * @var Environment
      */
@@ -41,25 +43,26 @@ class MailService
 
     public function sendMailWithAttachment(): void
     {
-        $this->generator->generateFromHtml($this->engine->render('attachment.html.twig'),'helloworld.pdf', [], true);
-        $message = $this->createBaseMessage();
-        $message->attachFromPath('test.pdf', 'Test.pdf', 'application/pdf');
+        $this->generator->generateFromHtml($this->engine->render('attachment.html.twig'), $this->fileName, [], true);
+        $message = $this->createBaseMessage('With attachment');
+        $message->attachFromPath($this->fileName, 'Test.pdf', 'application/pdf');
 
         $this->mailer->send($message);
     }
 
     public function sendMailWithoutAttachment(): void
     {
-        $this->mailer->send($this->createBaseMessage());
+        $this->mailer->send($this->createBaseMessage('Without attachment'));
     }
 
-    private function createBaseMessage(): Email
+    private function createBaseMessage(string $title): Email
     {
         $message = (new TemplatedEmail())
+            ->subject($title)
             ->from('ruben6jacobs@gmail.com')
             ->to('hello.world@symfony.com')
-            ->subject('Mail with attachment')
-            ->html('mail.html.twig');
+            ->htmlTemplate('mail.html.twig')
+            ->context(['page_title' => $title]);
 
         return $message;
     }
