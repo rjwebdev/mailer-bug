@@ -1,0 +1,29 @@
+{% filter inky|inline_css(source('@css/mail.css')) %}
+    <container>
+        <row class="header">
+            <columns large="3" small="5">
+                <spacer size="16"></spacer>
+                <a href="{{ path('homepage') }}" style="padding-top: 20px;">
+                    <img src="{{ email.image('@images/logo.png') }}">
+                </a>
+            </columns>
+            <columns large="9" small="7" valign="middle">
+                Bug in email
+            </columns>
+        </row>
+        <row>
+            <p>This is the body of my email</p>
+        </row>
+
+        <row class="footer">
+            <columns>
+                <spacer size="15"></spacer>
+                <strong>Test</strong>
+            </columns>
+            <columns valign="middle">
+                <spacer size="15"></spacer>
+                <strong>Another test</strong>
+            </columns>
+        </row>
+    </container>
+{% endfilter %}
